@@ -1,0 +1,22 @@
+.oceanFloor {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  contain: layout paint style; /* scopes resize/repaint work to this box instead of the whole page */
+}
+
+.rock {
+  position: absolute;
+}
+
+.seaweed {
+  position: absolute;
+}
+
+.seaweedLayer {
+  /* fills the exact same box as .oceanFloor, so left/right/bottom % on the
+     seaweed inside still resolve the same as before */
+  position: absolute;
+  inset: 0;
+}
