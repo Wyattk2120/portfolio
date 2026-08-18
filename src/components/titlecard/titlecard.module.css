@@ -10,6 +10,63 @@
     flex-direction: row;
     gap: 20px;
     color: #1c9999;
+    position: relative; /* so .bubble's border-box path traces this card, not some further ancestor */
+}
+
+.bubble {
+    position: absolute;
+    top: 10%;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    /* glossy highlight near the top-left, fading to a faint tint at the edge — like light on a real air bubble */
+    background: radial-gradient(
+        circle at 30% 30%,
+        rgba(255, 255, 255, 0.85),
+        rgba(255, 255, 255, 0.15) 55%,
+        transparent 75%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow:
+        inset 0 0 4px rgba(255, 255, 255, 0.5),
+        0 0 6px rgba(255, 255, 255, 0.35);
+    animation:
+        bob 6s ease-in-out infinite alternate,
+        wobble 3.2s ease-in-out infinite;
+}
+
+/* straddles the card's left edge, like the earlier border-riding bubbles did */
+.bubbleLeft {
+    left: 0;
+    --center-shift: -50%;
+}
+
+/* straddles the right edge instead */
+.bubbleRight {
+    right: 0;
+    --center-shift: 50%;
+}
+
+@keyframes bob {
+    0% {
+        top: 10%;
+    }
+    100% {
+        top: 90%;
+    }
+}
+
+@keyframes wobble {
+    /* horizontal centering (--center-shift) is baked in here, alongside the
+       scale pulse, since an animated `transform` fully replaces any other
+       source for that property while it's running — a separate static
+       transform on .bubbleLeft/.bubbleRight would get wiped out otherwise */
+    0%, 100% {
+        transform: translate(var(--center-shift), -50%) scale(1);
+    }
+    50% {
+        transform: translate(var(--center-shift), -50%) scale(1.15);
+    }
 }
 
 .details{
@@ -20,11 +77,13 @@
 }
 
 .image{
-    
-    width: 100px;
-    height: 100px;
+
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
     object-fit: cover;
+    align-self: center;
+    padding: 15px;
 }
 
 .title{
@@ -56,9 +115,9 @@
 }
 
 .bio {
-    padding-top: 20px;
+    padding-top: 15px;
     padding-bottom: 20px;
-    max-height: 150px;
+    max-height: 100px; /* so the scrollbar appears when the bio is long */
     overflow-y: auto;
 }
 
