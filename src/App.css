@@ -2,5 +2,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* pushes children (the ocean floor) to the bottom */
+  justify-content: space-between; /* was: flex-end — first child now goes top, last stays bottom */
+  align-items: center; /* centers children horizontally */
+
 }
