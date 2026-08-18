@@ -6,6 +6,8 @@ import Seaweed from './Seaweed';
 const DEPTHS = [2.2, 2.9, 2.4, 3.0, 2.6, 2.3, 2.8, 2.5, 3.1, 2.7, 2.1, 3.2, 2.56];
 const ROTATIONS = [-15, -8, 0, 8, 15, -10, 5, -5, 12, -12];
 const BOTTOMS = ['-20px', '-15px', '-25px', '-18px', '-22px'];
+const SWAY_DURATIONS = [5.5, 6.4, 7.2, 8, 6, 7.8, 6.8, 6.1];
+const SWAY_DELAYS = [0, 0.4, 0.8, 1.2, 1.6, 2, 2.4, 2.8, 3.2, 3.6];
 
 const MIN_SEAWEED_SIZE = 70;
 const MAX_SEAWEED_SIZE = 275;
@@ -19,6 +21,8 @@ const seaweedPatch = Array.from({ length: SEAWEED_COUNT }, (_, i) => ({
     depth: DEPTHS[i % DEPTHS.length],
     rotation: ROTATIONS[i % ROTATIONS.length],
     bottom: BOTTOMS[i % BOTTOMS.length],
+    swayDuration: SWAY_DURATIONS[i % SWAY_DURATIONS.length],
+    swayDelay: SWAY_DELAYS[i % SWAY_DELAYS.length],
 }));
 
 /** Renders the ocean floor scene: a fixed cluster of rocks plus a generated patch of seaweed. */

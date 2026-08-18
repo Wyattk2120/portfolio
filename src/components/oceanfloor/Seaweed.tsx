@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import styles from './OceanFloor.module.css';
 
 /**
@@ -19,8 +20,12 @@ type SeaweedProps = {
     depth?: number;
     /** Fixed size in pixels, overriding the size derived from `depth`. */
     size?: number;
-    /** Rotation in degrees. */
+    /** Base rotation in degrees; the sway animation oscillates around this. */
     rotation?: number;
+    /** Sway animation duration in seconds. Defaults to `4`. */
+    swayDuration?: number;
+    /** Sway animation delay in seconds, so instances don't sway in unison. Defaults to `0`. */
+    swayDelay?: number;
 };
 
 /** Fill color (RGB, 0–255 per channel) at full brightness. */
@@ -33,7 +38,16 @@ const shade = (channel: number, factor: number) => Math.round(Math.min(255, Math
 const toHex = (n: number) => n.toString(16).padStart(2, '0');
 
 /** A decorative seaweed strand on the ocean floor, styled from `depth` unless overridden. Always renders behind Rock. */
-const Seaweed = ({ left, right, bottom = '0', depth = 0, size: sizeOverride, rotation = 0 }: SeaweedProps) => {
+const Seaweed = ({
+    left,
+    right,
+    bottom = '0',
+    depth = 0,
+    size: sizeOverride,
+    rotation = 0,
+    swayDuration = 4,
+    swayDelay = 0,
+}: SeaweedProps) => {
     const size = sizeOverride ?? 60 - depth * 40;
 
     // No layer base, unlike Rock's +100, so seaweed always sits behind every rock.
@@ -45,20 +59,23 @@ const Seaweed = ({ left, right, bottom = '0', depth = 0, size: sizeOverride, rot
 
     const anchorShift = right !== undefined ? '50%' : '-50%';
 
+    // Read by the `sway` keyframes in OceanFloor.module.css, which animates
+    // `transform` directly and so needs these baked in as custom properties
+    // rather than a one-off inline `transform`.
+    const style: CSSProperties = {
+        width: size,
+        height: size,
+        ...(right !== undefined ? { right } : { left }),
+        bottom,
+        zIndex,
+        ['--anchor-shift' as string]: anchorShift,
+        ['--base-rotation' as string]: `${rotation}deg`,
+        ['--sway-duration' as string]: `${swayDuration}s`,
+        ['--sway-delay' as string]: `${swayDelay}s`,
+    };
+
     return (
-        <svg
-            viewBox="0 0 1200 1200"
-            aria-hidden="true"
-            className={styles.seaweed}
-            style={{
-                width: size,
-                height: size,
-                ...(right !== undefined ? { right } : { left }),
-                bottom,
-                zIndex,
-                transform: `translateX(${anchorShift}) rotate(${rotation}deg)`,
-            }}
-        >
+        <svg viewBox="0 0 1200 1200" aria-hidden="true" className={styles.seaweed} style={style}>
             <path fill={fill} d={SEAWEED_PATH} />
         </svg>
     );

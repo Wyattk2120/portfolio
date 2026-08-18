@@ -12,6 +12,18 @@
 
 .seaweed {
   position: absolute;
+  transform-origin: 50% 100%; /* pivot from its root in the sand, not its center */
+  animation: sway var(--sway-duration, 4s) ease-in-out infinite backwards;
+  animation-delay: var(--sway-delay, 0s);
+}
+
+@keyframes sway {
+  0%, 100% {
+    transform: translateX(var(--anchor-shift)) rotate(calc(var(--base-rotation) - 3deg));
+  }
+  50% {
+    transform: translateX(var(--anchor-shift)) rotate(calc(var(--base-rotation) + 3deg));
+  }
 }
 
 .seaweedLayer {
