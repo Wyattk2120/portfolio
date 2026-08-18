@@ -14,16 +14,32 @@ const MAX_SEAWEED_SIZE = 275;
 
 const SEAWEED_COUNT = 125;
 
-/** Generated once at module load, not per render, so sizes stay stable across re-renders. */
-const seaweedPatch = Array.from({ length: SEAWEED_COUNT }, (_, i) => ({
-    left: `${((i / SEAWEED_COUNT) * 100).toFixed(1)}%`,
-    size: Math.round(MIN_SEAWEED_SIZE + Math.random() * (MAX_SEAWEED_SIZE - MIN_SEAWEED_SIZE)),
-    depth: DEPTHS[i % DEPTHS.length],
-    rotation: ROTATIONS[i % ROTATIONS.length],
-    bottom: BOTTOMS[i % BOTTOMS.length],
-    swayDuration: SWAY_DURATIONS[i % SWAY_DURATIONS.length],
-    swayDelay: SWAY_DELAYS[i % SWAY_DELAYS.length],
-}));
+/** Chance that a given seaweed uses the rare shape/color variant instead of the default green. */
+const RARE_VARIANT_CHANCE = 0.15;
+
+/** Colors the rare variant randomly picks from. */
+const RARE_COLORS = [
+    { r: 0x7a, g: 0x2f, b: 0x52 }, // dark pink
+    { r: 0x7a, g: 0x66, b: 0x1a }, // dark yellow
+    { r: 0x4a, g: 0x1f, b: 0x7a }, // purple
+];
+
+/** Generated once at module load, not per render, so values stay stable across re-renders. */
+const seaweedPatch = Array.from({ length: SEAWEED_COUNT }, (_, i) => {
+    const isRare = Math.random() < RARE_VARIANT_CHANCE;
+
+    return {
+        left: `${((i / SEAWEED_COUNT) * 100).toFixed(1)}%`,
+        size: Math.round(MIN_SEAWEED_SIZE + Math.random() * (MAX_SEAWEED_SIZE - MIN_SEAWEED_SIZE)),
+        depth: DEPTHS[i % DEPTHS.length],
+        rotation: ROTATIONS[i % ROTATIONS.length],
+        bottom: BOTTOMS[i % BOTTOMS.length],
+        swayDuration: SWAY_DURATIONS[i % SWAY_DURATIONS.length],
+        swayDelay: SWAY_DELAYS[i % SWAY_DELAYS.length],
+        variant: isRare ? 1 : 0,
+        ...(isRare ? { baseColor: RARE_COLORS[Math.floor(Math.random() * RARE_COLORS.length)] } : {}),
+    };
+});
 
 /** Renders the ocean floor scene: a fixed cluster of rocks plus a generated patch of seaweed. */
 const OceanFloor = () => {
