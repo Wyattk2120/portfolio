@@ -4,7 +4,7 @@
     border-radius: 16px;
     background: #16415d;
     border: 3px solid #1c9999;
-    box-shadow: #1c9999;
+    box-shadow: -20px 25px 45px 8px rgba(14, 42, 60, 0.65);
     margin-top: 80px;
     display: flex;
     flex-direction: row;
