@@ -30,7 +30,7 @@ const DEFAULT_BASE_COLOR: RGB = { r: 0x1f, g: 0x4d, b: 0x38 };
 
 /** Props for {@link Seaweed}. Provide `left` or `right`, not both. */
 type SeaweedProps = {
-    /** Distance from the left edge (e.g. `"20px"`, `"10%"`). */
+    /** Distance from the left edge (e.g. `"20em"`, `"10%"`). Use `em`, not `px`, so it scales with {@link OceanFloor}'s fluid font-size. */
     left?: string;
     /** Distance from the right edge. Takes precedence over `left`. */
     right?: string;
@@ -87,8 +87,8 @@ const Seaweed = ({
     // `transform` directly and so needs these baked in as custom properties
     // rather than a one-off inline `transform`.
     const style: CSSProperties = {
-        width: size,
-        height: size,
+        width: `${size}em`,
+        height: `${size}em`,
         ...(right !== undefined ? { right } : { left }),
         bottom,
         zIndex,
