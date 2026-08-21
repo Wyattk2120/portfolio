@@ -1,9 +1,17 @@
 .oceanFloor {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 300em; /* in em, not px, so it scales with font-size below */
   overflow: hidden;
   contain: layout paint style; /* scopes resize/repaint work to this box instead of the whole page */
+
+  /* Every rock/seaweed size and offset in this subtree is authored in `em`
+     rather than `px`, so this font-size acts as a single scale factor for
+     the whole scene. 0.05vw makes 1em = 0.75px at a ~1500px-wide viewport
+     (75% of the original design size, since full-width felt oversized);
+     clamp() keeps things from vanishing on narrow phones or ballooning on
+     ultra-wide monitors. */
+  font-size: clamp(0.4px, 0.05vw, 1.2px);
 }
 
 .rock {

@@ -3,7 +3,7 @@ import rockImg from '../../assets/rock.svg';
 
 /** Props for {@link Rock}. Provide `left` or `right`, not both. */
 type RockProps = {
-    /** Distance from the left edge (e.g. `"20px"`, `"10%"`). */
+    /** Distance from the left edge (e.g. `"20em"`, `"10%"`). Use `em`, not `px`, so it scales with {@link OceanFloor}'s fluid font-size. */
     left?: string;
     /** Distance from the right edge. Takes precedence over `left`. */
     right?: string;
@@ -32,8 +32,8 @@ const Rock = ({ left, right, bottom = '0', depth = 0, size: sizeOverride, rotati
             alt="rock"
             className={styles.rock}
             style={{
-                width: size,
-                height: size,
+                width: `${size}em`,
+                height: `${size}em`,
                 ...(right !== undefined ? { right } : { left }),
                 bottom,
                 zIndex,
