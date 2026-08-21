@@ -1,11 +1,20 @@
 .titleCard{
-    width: 800px;
-    padding: 40px;
-    border-radius: 100px;
-    margin-top: 80px;
+    /* Every size below is authored in `em` rather than `px`, so this
+       font-size acts as a single scale factor for the whole card — same
+       technique as OceanFloor.module.css. 1.5vw caps at 14px (~93% of the
+       original fixed-design scale) around a ~930px-wide viewport, so
+       desktops get a slightly smaller card while narrower screens shrink
+       it proportionally; clamp() keeps it from vanishing on small phones
+       or growing past that capped size on ultra-wide monitors. */
+    font-size: clamp(5px, 1.5vw, 14px);
+
+    width: 50em;
+    padding: 2.5em;
+    border-radius: 6.25em;
+    margin-top: 5em;
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    gap: 1.25em;
     color: #0a1a33;
     position: relative;
 }
@@ -19,26 +28,26 @@
 
 .image{
 
-    width: 250px;
-    height: 250px;
+    width: 15.625em;
+    height: 15.625em;
     border-radius: 50%;
     object-fit: cover;
     align-self: center;
-    padding: 30px;
+    padding: 1.875em;
 }
 
 .title{
     text-align: center;
-    border-bottom: 2px solid #0a1a33;
-    padding-bottom: 8px;
+    border-bottom: 0.125em solid #0a1a33;
+    padding-bottom: 0.5em;
     font-family: 'Space Mono', monospace;
-    font-size: 3rem;
+    font-size: 3em;
 }
 
 .sectionLabel {
-    margin-top: 16px;
-    margin-bottom: 4px;
-    font-size: 0.9rem;
+    margin-top: 1em;
+    margin-bottom: 0.25em;
+    font-size: 0.9em;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     opacity: 0.8;
@@ -46,26 +55,26 @@
 
 .bio,
 .credentials {
-    border: 2px solid #0a1a33;
-    border-radius: 12px;
-    padding: 12px 16px;
+    border: 0.125em solid #0a1a33;
+    border-radius: 0.75em;
+    padding: 0.75em 1em;
     margin: 0;
     font-weight: 500;
 }
 
 .credentials {
-    padding-left: 32px;
+    padding-left: 2em;
 }
 
 .bio {
-    padding-top: 15px;
-    padding-bottom: 20px;
-    max-height: 100px; /* so the scrollbar appears when the bio is long */
+    padding-top: 0.9375em;
+    padding-bottom: 1.25em;
+    max-height: 6.25em; /* so the scrollbar appears when the bio is long */
     overflow-y: auto;
 }
 
 .bio::-webkit-scrollbar {
-    width: 14px; /* wide enough for the thumb circle to sit on the centered line */
+    width: 0.875em; /* wide enough for the thumb circle to sit on the centered line */
 }
 
 .bio::-webkit-scrollbar-track {
@@ -82,10 +91,10 @@
 .bio::-webkit-scrollbar-thumb {
     background: #0a1a33;
     border-radius: 50%;
-    min-height: 14px;
+    min-height: 0.875em;
     /* border matches the card background, so the circle reads as a
        distinct dot floating on the line instead of a pill filling it */
-    border: 4px solid #16415d;
+    border: 0.25em solid #16415d;
 }
 
 .bio::-webkit-scrollbar-thumb:hover {
