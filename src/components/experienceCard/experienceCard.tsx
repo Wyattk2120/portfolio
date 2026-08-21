@@ -13,27 +13,37 @@ type Experience = {
     description: string;
 }
 
-type ExperienceCardProps = Experience;
+type ExperienceCardProps = {
+    experiences: Experience[];
+};
 
 const MONTH_NAMES = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
 
-const formatMonthYear = ({month, year}: MonthYear) => 
-    `${MONTH_NAMES[month - 1]} ${year}`; 
+const formatMonthYear = ({month, year}: MonthYear) =>
+    `${MONTH_NAMES[month - 1]} ${year}`;
 
-const ExperienceCard = ({company, position, startDate, endDate, description}: ExperienceCardProps) => {
-    const dateRange = `${formatMonthYear(startDate)} - ${endDate ? formatMonthYear(endDate) : "Present"}`;
-
+const ExperienceCard = ({ experiences }: ExperienceCardProps) => {
     return (
         <div className={styles.experienceCard}>
-            <div className={styles.header}>
-                <h2 className={styles.position}>{position}</h2>
-                <span className={styles.dateRange}>{dateRange}</span>
-            </div>
-            <h3 className={styles.company}>{company}</h3>
-            <p className={styles.description}>{description}</p>
+            <ul className={styles.list}>
+                {experiences.map(({ company, position, startDate, endDate, description }, i) => {
+                    const dateRange = `${formatMonthYear(startDate)} - ${endDate ? formatMonthYear(endDate) : "Present"}`;
+
+                    return (
+                        <li key={`${company}-${position}-${i}`} className={styles.entry}>
+                            <div className={styles.header}>
+                                <h2 className={styles.position}>{position}</h2>
+                                <span className={styles.dateRange}>{dateRange}</span>
+                            </div>
+                            <h3 className={styles.company}>{company}</h3>
+                            <p className={styles.description}>{description}</p>
+                        </li>
+                    );
+                })}
+            </ul>
         </div>
     );
 };

@@ -16,19 +16,25 @@ type titleCardProps = {
 const TitleCard = ({ name, image, bio, credentials }: titleCardProps) => {
     return (
         <div className={styles.titleCard}>
-            <img className={styles.image} src={image} alt={name} />
-            <div className={styles.details}>
-                <h1 className={styles.title}>{name}</h1>
-                <h2 className={styles.sectionLabel}>Bio</h2>
-                <p className={styles.bio}>{bio}</p>
-                <h2 className={styles.sectionLabel}>Credentials</h2>
-                <ul className={styles.credentials}>
-                    {credentials.map((credential) => (
-                        <li key={credential.title}>
-                            {credential.title} — {credential.issuer} ({credential.achieved})
-                        </li>
-                    ))}
-                </ul>
+            <h1 className={styles.title}>{name}</h1>
+            <div className={styles.body}>
+                <img className={styles.image} src={image} alt={name} />
+                <div className={styles.details}>
+                    <div className={styles.bioSection}>
+                        <h2 className={styles.sectionLabel}>Bio</h2>
+                        <p className={styles.bio}>{bio}</p>
+                    </div>
+                    <div className={styles.credentialsSection}>
+                        <h2 className={styles.sectionLabel}>Credentials</h2>
+                        <ul className={styles.credentials}>
+                            {credentials.map((credential) => (
+                                <li key={credential.title}>
+                                    {credential.title} — {credential.issuer} ({credential.achieved})
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     )

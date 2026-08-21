@@ -13,16 +13,23 @@
     border-radius: 6.25em;
     margin-top: 5em;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 1.25em;
     color: #0a1a33;
     position: relative;
+}
+
+.body {
+    display: flex;
+    flex-direction: row;
+    gap: 1.25em;
 }
 
 .details{
     display: flex;
     flex-direction: column;
     flex: 1;
+    gap: 1em;
     font-family: 'Quicksand', sans-serif;
 }
 
@@ -44,8 +51,17 @@
     font-size: 3em;
 }
 
+.bioSection,
+.credentialsSection {
+    background: #0e3050;
+    border: 0.125em solid #29bcbc;
+    border-radius: 0.75em;
+    padding: 0.75em 1em;
+    color: #29bcbc;
+}
+
 .sectionLabel {
-    margin-top: 1em;
+    margin-top: 0;
     margin-bottom: 0.25em;
     font-size: 0.9em;
     text-transform: uppercase;
@@ -55,9 +71,6 @@
 
 .bio,
 .credentials {
-    border: 0.125em solid #0a1a33;
-    border-radius: 0.75em;
-    padding: 0.75em 1em;
     margin: 0;
     font-weight: 500;
 }
@@ -82,19 +95,19 @@
     background: linear-gradient(
         to right,
         transparent calc(50% - 1px),
-        #0a1a33 calc(50% - 1px),
-        #0a1a33 calc(50% + 1px),
+        #16415d calc(50% - 1px),
+        #16415d calc(50% + 1px),
         transparent calc(50% + 1px)
     );
 }
 
 .bio::-webkit-scrollbar-thumb {
-    background: #0a1a33;
+    background: #dceef5;
     border-radius: 50%;
     min-height: 0.875em;
     /* border matches the card background, so the circle reads as a
        distinct dot floating on the line instead of a pill filling it */
-    border: 0.25em solid #16415d;
+    border: 0.25em solid #0e3050;
 }
 
 .bio::-webkit-scrollbar-thumb:hover {

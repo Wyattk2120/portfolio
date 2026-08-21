@@ -5,9 +5,9 @@ body {
 html{
   background: linear-gradient(
     to bottom,
-    #4a90b8 0%,     
-    #1a4d6d 40%,     
-    #0a2540 100% 
+    #4a90b8 0%,
+    #367397 40%,
+    #184866 100%
   );
   min-height: 100vh;
 }
