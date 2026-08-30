@@ -6,3 +6,11 @@
   align-items: center; /* centers children horizontally */
 
 }
+
+.projectsRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; /* cards are capped smaller now, so center them instead of stretching edge-to-edge */
+  gap: 2vw;
+  width: 100%; /* spans the full screen width, overriding .page's centered/content-sized children */
+}

@@ -1,5 +1,6 @@
 import TitleCard from './components/titlecard/titlecard';
 import ExperienceCard from './components/experienceCard/experienceCard';
+import ProjectCard from './components/projectCard/projectCard';
 import OceanFloor from './components/oceanfloor/OceanFloor';
 import heroImg from './assets/hero.png';
 import './App.css'
@@ -40,6 +41,27 @@ const FAKE_EXPERIENCES = [
   },
 ];
 
+const FAKE_PROJECTS = [
+  {
+    name: 'Ocean Floor Scene',
+    image: heroImg,
+    description: 'A fully animated CSS ocean floor scene with swaying seaweed and scattered rocks, all scaled proportionally to the viewport.',
+    techStack: ['React', 'TypeScript', 'CSS'],
+  },
+  {
+    name: 'Task Tracker',
+    image: heroImg,
+    description: 'A small Kanban-style app for tracking personal tasks, with drag-and-drop columns and local persistence.',
+    techStack: ['React', 'Vite', 'Zustand'],
+  },
+  {
+    name: 'Recipe Finder',
+    image: heroImg,
+    description: 'Searches a public recipe API and lets users save favorites, with a responsive card grid layout.',
+    techStack: ['React', 'REST API', 'CSS Grid'],
+  },
+];
+
 function App() {
   return (
     <div className="page">
@@ -50,6 +72,11 @@ function App() {
         credentials={FAKE_CREDENTIALS}
       />
       <ExperienceCard experiences={FAKE_EXPERIENCES} />
+      <div className="projectsRow">
+        {FAKE_PROJECTS.slice(0, 2).map((project) => (
+          <ProjectCard key={project.name} {...project} />
+        ))}
+      </div>
       <OceanFloor />
     </div>
   )

@@ -1,0 +1,67 @@
+.projectCard {
+    /* Same em + clamp() scaling technique used across the other cards: this
+       font-size is the single scale factor for every size below. */
+    font-size: clamp(5px, 1.15vw, 11px);
+
+    flex: 1 1 0; /* fills up to its half of .projectsRow, capped by max-width below */
+    max-width: 24em; /* caps how big each card gets, now that .projectsRow centers rather than stretches them */
+    min-width: 0; /* lets it shrink below its content's size instead of overflowing the row */
+    aspect-ratio: 2 / 3; /* rectangular, taller than it is wide */
+    display: flex;
+    flex-direction: column;
+    background: #0e3050;
+    border: 0.125em solid #29bcbc;
+    border-radius: 1.5em;
+    overflow: hidden; /* clips the image's top corners to the card's radius */
+    margin-top: 1.5em;
+    color: #29bcbc;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.image {
+    display: block;
+    width: 100%;
+    flex: 0 0 45%; /* top portion of the card's height; details take the rest */
+    min-height: 0; /* same min-width:auto gotcha as before, mirrored on the main axis */
+    object-fit: cover;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto; /* in case the description doesn't fit the remaining height */
+    gap: 0.75em;
+    padding: 1.25em 1.5em 1.5em;
+}
+
+.name {
+    margin: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.4em;
+}
+
+.description {
+    margin: 0;
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+.techStack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.techPill {
+    border: 0.0625em solid #29bcbc;
+    border-radius: 999em;
+    padding: 0.25em 0.75em;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
