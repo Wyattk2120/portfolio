@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import TitleCard from './components/titlecard/titlecard';
 import ExperienceCard from './components/experienceCard/experienceCard';
 import ProjectCard from './components/projectCard/projectCard';
@@ -62,7 +63,74 @@ const FAKE_PROJECTS = [
   },
 ];
 
+type Project = (typeof FAKE_PROJECTS)[number];
+type SlideDirection = 'next' | 'prev';
+
+const SLIDE_DURATION_MS = 400;
+
 function App() {
+  const [projectIndex, setProjectIndex] = useState(0);
+  // While cycling, the track briefly holds 3 cards instead of 2 — the
+  // outgoing edge card, the one shifting into the other slot, and the new
+  // incoming card — and slides by exactly one card-width, so each card
+  // visibly moves to its neighbor's spot instead of the whole pair
+  // teleporting to a new pair.
+  const [transitionSlots, setTransitionSlots] = useState<Project[] | null>(null);
+  const [shiftDirection, setShiftDirection] = useState<SlideDirection>('next');
+  const [shiftPx, setShiftPx] = useState(0);
+  const [shiftAnimated, setShiftAnimated] = useState(false);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const commitTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rafRef = useRef<number | null>(null);
+
+  const visibleProjects = [0, 1].map(
+    (offset) => FAKE_PROJECTS[(projectIndex + offset) % FAKE_PROJECTS.length]
+  );
+
+  useEffect(() => () => {
+    if (commitTimeoutRef.current) clearTimeout(commitTimeoutRef.current);
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  const cycleProjects = (direction: SlideDirection) => {
+    if (transitionSlots) return; // ignore clicks until the current shift settles
+
+    const at = (offset: number) =>
+      FAKE_PROJECTS[(projectIndex + offset + FAKE_PROJECTS.length) % FAKE_PROJECTS.length];
+    const slots = direction === 'next' ? [at(0), at(1), at(2)] : [at(-1), at(0), at(1)];
+    const slotWidth = (viewportRef.current?.clientWidth ?? 0) / 2;
+
+    setShiftDirection(direction);
+    setTransitionSlots(slots);
+    setShiftAnimated(false);
+    setShiftPx(direction === 'next' ? 0 : -slotWidth); // starting position matches the current pair on screen
+
+    // Two frames so the browser actually paints that starting position
+    // before we enable the transition and move to the target — otherwise
+    // the browser can coalesce both changes and the shift never animates.
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = requestAnimationFrame(() => {
+        setShiftAnimated(true);
+        setShiftPx(direction === 'next' ? -slotWidth : 0);
+      });
+    });
+
+    if (commitTimeoutRef.current) clearTimeout(commitTimeoutRef.current);
+    commitTimeoutRef.current = setTimeout(() => {
+      setProjectIndex((i) =>
+        direction === 'next'
+          ? (i + 1) % FAKE_PROJECTS.length
+          : (i - 1 + FAKE_PROJECTS.length) % FAKE_PROJECTS.length
+      );
+      setTransitionSlots(null);
+      setShiftAnimated(false);
+      setShiftPx(0);
+    }, SLIDE_DURATION_MS);
+  };
+
+  const showPreviousProjects = () => cycleProjects('prev');
+  const showNextProjects = () => cycleProjects('next');
+
   return (
     <div className="page">
       <TitleCard
@@ -72,10 +140,50 @@ function App() {
         credentials={FAKE_CREDENTIALS}
       />
       <ExperienceCard experiences={FAKE_EXPERIENCES} />
-      <div className="projectsRow">
-        {FAKE_PROJECTS.slice(0, 2).map((project) => (
-          <ProjectCard key={project.name} {...project} />
-        ))}
+      <div className="projectsWrapper">
+        <button
+          type="button"
+          className="arrowButton arrowLeft"
+          onClick={showPreviousProjects}
+          aria-label="Show previous project"
+        >
+          ‹
+        </button>
+        <div className="projectsSection">
+          <div className="projectsViewport" ref={viewportRef}>
+            {transitionSlots ? (
+              <div
+                className="projectsTrack"
+                style={{
+                  transform: `translateX(${shiftPx}px)`,
+                  transition: shiftAnimated ? `transform ${SLIDE_DURATION_MS}ms ease` : 'none',
+                }}
+              >
+                {transitionSlots.map((project, i) => (
+                  <div className="projectSlot" key={`${project.name}-${shiftDirection}-${i}`}>
+                    <ProjectCard {...project} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="projectsTrack">
+                {visibleProjects.map((project) => (
+                  <div className="projectSlot" key={project.name}>
+                    <ProjectCard {...project} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+        <button
+          type="button"
+          className="arrowButton arrowRight"
+          onClick={showNextProjects}
+          aria-label="Show next project"
+        >
+          ›
+        </button>
       </div>
       <OceanFloor />
     </div>

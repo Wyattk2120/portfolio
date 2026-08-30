@@ -1,10 +1,15 @@
 .projectCard {
     /* Same em + clamp() scaling technique used across the other cards: this
-       font-size is the single scale factor for every size below. */
-    font-size: clamp(5px, 1.15vw, 11px);
+       font-size is the single scale factor for every size below. Reads from
+       --card-font-scale (set on .projectsSection in App.css) so the card's
+       own size and .projectsSection's max-width — which determines each
+       .projectSlot's width — scale in lockstep at every viewport width;
+       the clamp() here is only a fallback for if this ever renders outside
+       that ancestor. */
+    font-size: var(--card-font-scale, clamp(5px, 1.15vw, 11px));
 
-    flex: 1 1 0; /* fills up to its half of .projectsRow, capped by max-width below */
-    max-width: 24em; /* caps how big each card gets, now that .projectsRow centers rather than stretches them */
+    flex: 1 1 0; /* fills its .projectSlot (50% of the viewport), capped by max-width below */
+    max-width: 30em; /* caps the card's actual size — .projectSlot is 50% of the full viewport, way bigger than this on most screens */
     min-width: 0; /* lets it shrink below its content's size instead of overflowing the row */
     aspect-ratio: 2 / 3; /* rectangular, taller than it is wide */
     display: flex;

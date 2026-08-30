@@ -7,10 +7,80 @@
 
 }
 
-.projectsRow {
+.projectsWrapper {
+  position: relative; /* anchors the arrow buttons in the actual empty space around .projectsSection */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centers the capped-width .projectsSection within the full-width wrapper */
+  width: 100%;
+}
+
+.projectsSection {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  /* Single source of truth for the card scale — projectCard.module.css's
+     font-size reads this same variable, so the card's rendered size and
+     this max-width (which sets each 50% .projectSlot's width) are always
+     locked together instead of drifting apart at different viewport
+     widths, like they did when this was a flat 700px cap. */
+  --card-font-scale: clamp(5px, 1.15vw, 11px);
+  max-width: calc(60 * var(--card-font-scale)); /* 2 slots worth of the card's own 30em width, so each
+                                                     slot ends up exactly the card's size — no leftover gap */
+}
+
+.projectsViewport {
+  flex: 1;
+  overflow: hidden; /* clips whichever slot is currently sliding past an edge */
+}
+
+.projectsTrack {
   display: flex;
   flex-direction: row;
-  justify-content: center; /* cards are capped smaller now, so center them instead of stretching edge-to-edge */
-  gap: 2vw;
-  width: 100%; /* spans the full screen width, overriding .page's centered/content-sized children */
+  width: 100%;
+}
+
+/* flex-shrink: 0 is what lets a 3-slot track (during a transition) overflow
+   .projectsViewport's width instead of squeezing to fit it — the extra slot
+   sits just past the edge, clipped, until the transform slides it into view. */
+.projectSlot {
+  flex: 0 0 50%;
+  min-width: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  padding-inline: 1.5vw;
+}
+
+.arrowButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.125rem solid #29bcbc;
+  border-radius: 50%;
+  background: #0e3050;
+  color: #29bcbc;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 3; /* keeps the buttons clickable above the sliding track */
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.arrowButton:hover {
+  background: #29bcbc;
+  color: #0e3050;
+}
+
+.arrowLeft {
+  left: 6vw; /* sits in the real empty space between the screen edge and the capped-width .projectsSection */
+}
+
+.arrowRight {
+  right: 6vw;
 }
