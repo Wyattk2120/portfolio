@@ -3,7 +3,7 @@
        font-size is the single scale factor for every size below, so the
        whole card shrinks/grows together instead of each piece scaling on
        its own. */
-    font-size: clamp(5px, 1.5vw, 14px);
+    font-size: clamp(4px, 1.3vw, 12px);
 
     width: 60em;
     max-width: 100%;

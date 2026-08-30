@@ -11,7 +11,7 @@
      (75% of the original design size, since full-width felt oversized);
      clamp() keeps things from vanishing on narrow phones or ballooning on
      ultra-wide monitors. */
-  font-size: clamp(0.4px, 0.05vw, 1.2px);
+  font-size: clamp(0.35px, 0.044vw, 1.05px);
 }
 
 .rock {

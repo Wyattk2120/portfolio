@@ -68,24 +68,65 @@ type SlideDirection = 'next' | 'prev';
 
 const SLIDE_DURATION_MS = 400;
 
+// Mirrors the CSS: --card-font-scale: clamp(4px, 1vw, 9.5px) and the
+// card's own `max-width: 30em`, plus .projectSlot's `padding-inline: 1.5vw`
+// on both sides of every slot. Kept in one place so "how many cards fit"
+// stays in sync with how big the cards actually render.
+const CARD_MAX_EM = 30;
+const FONT_SCALE_MIN_PX = 4;
+const FONT_SCALE_MAX_PX = 9.5;
+const FONT_SCALE_VW = 0.01; // 1vw
+const SLOT_PADDING_VW = 0.03; // 1.5vw × 2 sides
+const ARROW_RESERVED_PX = 160; // rough space for both arrow buttons + their insets
+
+function getSlotWidthPx(containerWidth: number) {
+  const fontScale = Math.min(FONT_SCALE_MAX_PX, Math.max(FONT_SCALE_MIN_PX, containerWidth * FONT_SCALE_VW));
+  const cardWidth = fontScale * CARD_MAX_EM;
+  return cardWidth + containerWidth * SLOT_PADDING_VW;
+}
+
 function App() {
   const [projectIndex, setProjectIndex] = useState(0);
-  // While cycling, the track briefly holds 3 cards instead of 2 — the
-  // outgoing edge card, the one shifting into the other slot, and the new
-  // incoming card — and slides by exactly one card-width, so each card
-  // visibly moves to its neighbor's spot instead of the whole pair
-  // teleporting to a new pair.
+  // While cycling, the track briefly holds one extra card beyond however
+  // many are visible — the outgoing edge card, the ones shifting into their
+  // neighbor's spot, and the new incoming card — and slides by exactly one
+  // card-width, so each card visibly moves to its neighbor's spot instead
+  // of the whole visible set teleporting to a new one.
   const [transitionSlots, setTransitionSlots] = useState<Project[] | null>(null);
   const [shiftDirection, setShiftDirection] = useState<SlideDirection>('next');
   const [shiftPx, setShiftPx] = useState(0);
   const [shiftAnimated, setShiftAnimated] = useState(false);
+  const [wrapperWidth, setWrapperWidth] = useState(
+    () => (typeof window === 'undefined' ? 0 : window.innerWidth)
+  );
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const commitTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rafRef = useRef<number | null>(null);
 
-  const visibleProjects = [0, 1].map(
-    (offset) => FAKE_PROJECTS[(projectIndex + offset) % FAKE_PROJECTS.length]
+  // How many cards actually fit the available width right now — 3 on a
+  // wide screen, 1 on a narrow one — capped at the total project count so
+  // we never try to show more cards than exist.
+  const numVisible = Math.min(
+    FAKE_PROJECTS.length,
+    Math.max(1, Math.floor((wrapperWidth - ARROW_RESERVED_PX) / getSlotWidthPx(wrapperWidth)))
   );
+  const showArrows = numVisible < FAKE_PROJECTS.length;
+
+  const visibleProjects = Array.from(
+    { length: numVisible },
+    (_, offset) => FAKE_PROJECTS[(projectIndex + offset) % FAKE_PROJECTS.length]
+  );
+
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver((entries) => {
+      setWrapperWidth(entries[0].contentRect.width);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => () => {
     if (commitTimeoutRef.current) clearTimeout(commitTimeoutRef.current);
@@ -93,17 +134,19 @@ function App() {
   }, []);
 
   const cycleProjects = (direction: SlideDirection) => {
-    if (transitionSlots) return; // ignore clicks until the current shift settles
+    if (transitionSlots || !showArrows) return; // ignore clicks until the current shift settles, or if everything already fits
 
     const at = (offset: number) =>
       FAKE_PROJECTS[(projectIndex + offset + FAKE_PROJECTS.length) % FAKE_PROJECTS.length];
-    const slots = direction === 'next' ? [at(0), at(1), at(2)] : [at(-1), at(0), at(1)];
-    const slotWidth = (viewportRef.current?.clientWidth ?? 0) / 2;
+    const slots = Array.from({ length: numVisible + 1 }, (_, i) =>
+      direction === 'next' ? at(i) : at(i - 1)
+    );
+    const slotWidth = (viewportRef.current?.clientWidth ?? 0) / numVisible;
 
     setShiftDirection(direction);
     setTransitionSlots(slots);
     setShiftAnimated(false);
-    setShiftPx(direction === 'next' ? 0 : -slotWidth); // starting position matches the current pair on screen
+    setShiftPx(direction === 'next' ? 0 : -slotWidth); // starting position matches the current set on screen
 
     // Two frames so the browser actually paints that starting position
     // before we enable the transition and move to the target — otherwise
@@ -140,16 +183,21 @@ function App() {
         credentials={FAKE_CREDENTIALS}
       />
       <ExperienceCard experiences={FAKE_EXPERIENCES} />
-      <div className="projectsWrapper">
-        <button
-          type="button"
-          className="arrowButton arrowLeft"
-          onClick={showPreviousProjects}
-          aria-label="Show previous project"
+      <div className="projectsWrapper" ref={wrapperRef}>
+        {showArrows && (
+          <button
+            type="button"
+            className="arrowButton arrowLeft"
+            onClick={showPreviousProjects}
+            aria-label="Show previous project"
+          >
+            ‹
+          </button>
+        )}
+        <div
+          className="projectsSection"
+          style={{ maxWidth: getSlotWidthPx(wrapperWidth) * numVisible }}
         >
-          ‹
-        </button>
-        <div className="projectsSection">
           <div className="projectsViewport" ref={viewportRef}>
             {transitionSlots ? (
               <div
@@ -160,7 +208,11 @@ function App() {
                 }}
               >
                 {transitionSlots.map((project, i) => (
-                  <div className="projectSlot" key={`${project.name}-${shiftDirection}-${i}`}>
+                  <div
+                    className="projectSlot"
+                    style={{ flexBasis: `${100 / numVisible}%` }}
+                    key={`${project.name}-${shiftDirection}-${i}`}
+                  >
                     <ProjectCard {...project} />
                   </div>
                 ))}
@@ -168,7 +220,11 @@ function App() {
             ) : (
               <div className="projectsTrack">
                 {visibleProjects.map((project) => (
-                  <div className="projectSlot" key={project.name}>
+                  <div
+                    className="projectSlot"
+                    style={{ flexBasis: `${100 / numVisible}%` }}
+                    key={project.name}
+                  >
                     <ProjectCard {...project} />
                   </div>
                 ))}
@@ -176,14 +232,16 @@ function App() {
             )}
           </div>
         </div>
-        <button
-          type="button"
-          className="arrowButton arrowRight"
-          onClick={showNextProjects}
-          aria-label="Show next project"
-        >
-          ›
-        </button>
+        {showArrows && (
+          <button
+            type="button"
+            className="arrowButton arrowRight"
+            onClick={showNextProjects}
+            aria-label="Show next project"
+          >
+            ›
+          </button>
+        )}
       </div>
       <OceanFloor />
     </div>
