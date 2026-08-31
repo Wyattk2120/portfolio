@@ -4,6 +4,7 @@ import ExperienceCard from './components/experienceCard/experienceCard';
 import SkillBubbles, { type Skill } from './components/skillBubbles/skillBubbles';
 import ProjectCard from './components/projectCard/projectCard';
 import OceanFloor from './components/oceanfloor/OceanFloor';
+import FishBackdrop from './components/fishSchool/FishBackdrop';
 import heroImg from './assets/hero.png';
 import './App.css'
 
@@ -193,6 +194,7 @@ function App() {
 
   return (
     <div className="page">
+      <FishBackdrop />
       <TitleCard
         name="Jamie Rivera"
         image={heroImg}

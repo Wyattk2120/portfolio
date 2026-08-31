@@ -6,9 +6,9 @@
        desktops get a slightly smaller card while narrower screens shrink
        it proportionally; clamp() keeps it from vanishing on small phones
        or growing past that capped size on ultra-wide monitors. */
-    font-size: clamp(5px, 1.45vw, 13px);
+    font-size: clamp(6px, 1.6vw, 15px);
 
-    width: 50em;
+    width: 58em;
     padding: 2.5em;
     border-radius: 6.25em;
     margin-top: 5em;

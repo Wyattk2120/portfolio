@@ -1,0 +1,74 @@
+.backdrop {
+    /* Absolutely positioned within .page (its nearest positioned ancestor —
+       see App.css) rather than fixed to the viewport, so the schools are
+       pinned to a spot on the page itself — exactly where they'd sit if
+       you were scrolled to the very top — and scroll away with everything
+       else instead of following you down the page. inset:0 stretches this
+       to match .page's full (very tall) rendered height, not just one
+       viewport. Sits behind all real content (see .page's z-index in
+       App.css) and never intercepts clicks. */
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Below this width the side margins we measured mostly disappear (cards
+   start filling most of the viewport), so the fish would start overlapping
+   real content — simplest fix is to just not show them down there.
+   opacity (not display:none) on purpose: display:none fully removes the
+   element from rendering, so every fish's CSS animation restarts from
+   scratch the next time this flips back on — if the viewport width ever
+   hovers right at this boundary (a scrollbar toggling on/off as content
+   height changes shifts the effective width by its own ~15px, for
+   instance), that shows up as a visible "lurch" back to each fish's
+   starting position. opacity keeps the element rendered and its
+   animations running the whole time, just invisible, so there's nothing
+   to snap back when it crosses back over. */
+@media (max-width: 900px) {
+    .backdrop {
+        opacity: 0;
+    }
+}
+
+.school {
+    /* em-based scale for every fish size/offset/drift-distance inside,
+       same clamp() technique used everywhere else on the page. */
+    font-size: clamp(4px, 1vw, 11px);
+    position: absolute;
+    width: 20em;
+    height: 20em;
+}
+
+.drifter {
+    position: absolute;
+    animation: fishDrift var(--drift-duration, 6s) ease-in-out infinite alternate;
+    animation-delay: var(--drift-delay, 0s);
+}
+
+.bobber {
+    display: block;
+    fill: #0e3050; /* same navy as the card backgrounds — reads as a dim shape glimpsed in the water rather than a foreground element */
+    opacity: 0.45;
+    animation: fishBob var(--bob-duration, 3.5s) ease-in-out infinite;
+    animation-delay: var(--bob-delay, 0s);
+}
+
+@keyframes fishDrift {
+    from {
+        transform: translateX(calc(var(--drift-range) * -1));
+    }
+    to {
+        transform: translateX(var(--drift-range));
+    }
+}
+
+@keyframes fishBob {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(0.3em);
+    }
+}

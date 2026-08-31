@@ -1,4 +1,14 @@
 .page {
+  /* position:relative makes this the containing block for FishBackdrop's
+     position:absolute layer (its first child), so that layer's inset:0
+     spans .page's full — many-viewports-tall — rendered height instead of
+     just one viewport. z-index:1 is a second, independent reason to keep
+     this: it guarantees every real page element paints above that
+     decorative layer regardless of which of these children happen to be
+     position:relative themselves. */
+  position: relative;
+  z-index: 1;
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
