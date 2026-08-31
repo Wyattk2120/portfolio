@@ -1,21 +1,69 @@
-.experienceCard {
+.wrapper {
     /* Same em + clamp() scaling technique as titlecard.module.css: this
-       font-size is the single scale factor for every size below, so the
-       whole card shrinks/grows together instead of each piece scaling on
-       its own. */
+       font-size is the single scale factor for every size below (heading
+       included), so the whole section shrinks/grows together instead of
+       each piece scaling on its own. */
     font-size: clamp(4px, 1.3vw, 12px);
 
     width: 60em;
     max-width: 100%;
+    margin-top: 1.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    font-family: 'Quicksand', sans-serif;
+}
+
+/* Matches skillBubbles.module.css's .heading, so every section title on the
+   page reads as the same design system. */
+.heading {
+    position: relative; /* anchors the glowing underline below */
+    margin: 0;
+    text-align: center;
+    color: #29bcbc;
+    padding-bottom: 0.5em;
+    font-family: 'Space Mono', monospace;
+    font-size: 2.5em;
+}
+
+/* Same traveling-light technique as the entry dividers below (see
+   @keyframes travelingLight) — a dim base line with a brighter segment
+   sliding across it. Delay is staggered against the Tech Stack/Projects
+   headings (skillBubbles.module.css/App.css) so all three don't glow in
+   sync. */
+.heading::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 0.125em;
+    background-color: rgba(41, 188, 188, 0.35);
+    background-image: linear-gradient(to right, transparent, #29bcbc, transparent);
+    background-repeat: no-repeat;
+    background-size: 35% 100%;
+    box-shadow: 0 0 0.5em rgba(41, 188, 188, 0.6);
+    animation: headingGlow 3.5s ease-in-out infinite alternate;
+    animation-delay: 1.2s;
+}
+
+@keyframes headingGlow {
+    from {
+        background-position: -35% 0;
+    }
+    to {
+        background-position: 135% 0;
+    }
+}
+
+.experienceCard {
     max-height: 16em; /* caps the box so the list scrolls once it overflows */
     overflow-y: auto;
     padding: 2em;
     background: #0e3050;
     border: 0.125em solid #29bcbc;
     border-radius: 1.5em;
-    margin-top: 1.5em;
     color: #29bcbc; /* cascades to position/company/description/dateRange below, none of which set their own color */
-    font-family: 'Quicksand', sans-serif;
 }
 
 .list {

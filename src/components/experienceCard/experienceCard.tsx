@@ -27,23 +27,26 @@ const formatMonthYear = ({month, year}: MonthYear) =>
 
 const ExperienceCard = ({ experiences }: ExperienceCardProps) => {
     return (
-        <div className={styles.experienceCard}>
-            <ul className={styles.list}>
-                {experiences.map(({ company, position, startDate, endDate, description }, i) => {
-                    const dateRange = `${formatMonthYear(startDate)} - ${endDate ? formatMonthYear(endDate) : "Present"}`;
+        <div className={styles.wrapper}>
+            <h2 className={styles.heading}>Professional Experience</h2>
+            <div className={styles.experienceCard}>
+                <ul className={styles.list}>
+                    {experiences.map(({ company, position, startDate, endDate, description }, i) => {
+                        const dateRange = `${formatMonthYear(startDate)} - ${endDate ? formatMonthYear(endDate) : "Present"}`;
 
-                    return (
-                        <li key={`${company}-${position}-${i}`} className={styles.entry}>
-                            <div className={styles.header}>
-                                <h2 className={styles.position}>{position}</h2>
-                                <span className={styles.dateRange}>{dateRange}</span>
-                            </div>
-                            <h3 className={styles.company}>{company}</h3>
-                            <p className={styles.description}>{description}</p>
-                        </li>
-                    );
-                })}
-            </ul>
+                        return (
+                            <li key={`${company}-${position}-${i}`} className={styles.entry}>
+                                <div className={styles.header}>
+                                    <h3 className={styles.position}>{position}</h3>
+                                    <span className={styles.dateRange}>{dateRange}</span>
+                                </div>
+                                <h4 className={styles.company}>{company}</h4>
+                                <p className={styles.description}>{description}</p>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
         </div>
     );
 };

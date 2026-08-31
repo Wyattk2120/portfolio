@@ -8,6 +8,60 @@
 
 }
 
+.projectsSectionWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  /* Matches the clamp() scale used for ExperienceCard's/SkillBubbles' own
+     heading, so "Projects" reads at the same size as "Professional
+     Experience"/"Tech Stack" despite this living in global (non-module)
+     CSS rather than a component's own scoped font-size. */
+  font-size: clamp(4px, 1.3vw, 12px);
+}
+
+.projectsHeading {
+  position: relative; /* anchors the glowing underline below */
+  margin: 0;
+  width: 60em;
+  max-width: 100%;
+  text-align: center;
+  color: #29bcbc;
+  padding-bottom: 0.5em;
+  font-family: 'Space Mono', monospace;
+  font-size: 2.5em;
+}
+
+/* Same traveling-light technique as experienceCard's entry dividers/heading
+   and skillBubbles' heading — a dim base line with a brighter segment
+   sliding across it. Delay is staggered against those two so all three
+   section headings don't glow in sync. */
+.projectsHeading::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0.125em;
+  background-color: rgba(41, 188, 188, 0.35);
+  background-image: linear-gradient(to right, transparent, #29bcbc, transparent);
+  background-repeat: no-repeat;
+  background-size: 35% 100%;
+  box-shadow: 0 0 0.5em rgba(41, 188, 188, 0.6);
+  animation: headingGlow 3.5s ease-in-out infinite alternate;
+  animation-delay: 2.4s;
+}
+
+@keyframes headingGlow {
+  from {
+    background-position: -35% 0;
+  }
+  to {
+    background-position: 135% 0;
+  }
+}
+
 .projectsWrapper {
   position: relative; /* anchors the arrow buttons in the actual empty space around .projectsSection */
   display: flex;

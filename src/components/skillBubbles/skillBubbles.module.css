@@ -30,13 +30,42 @@
 }
 
 .heading {
+    position: relative; /* anchors the glowing underline below */
     margin: 0;
     text-align: center;
     color: #29bcbc;
-    border-bottom: 0.125em solid #29bcbc;
     padding-bottom: 0.5em;
     font-family: 'Space Mono', monospace;
-    font-size: 1.75em;
+    font-size: 2.5em;
+}
+
+/* Same traveling-light technique as experienceCard's entry dividers: a dim
+   base line with a brighter segment sliding across it. Delay is staggered
+   against the other two section headings (see experienceCard/App.css) so
+   all three don't glow in sync. */
+.heading::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 0.125em;
+    background-color: rgba(41, 188, 188, 0.35);
+    background-image: linear-gradient(to right, transparent, #29bcbc, transparent);
+    background-repeat: no-repeat;
+    background-size: 35% 100%;
+    box-shadow: 0 0 0.5em rgba(41, 188, 188, 0.6);
+    animation: headingGlow 3.5s ease-in-out infinite alternate;
+    animation-delay: 0s;
+}
+
+@keyframes headingGlow {
+    from {
+        background-position: -35% 0;
+    }
+    to {
+        background-position: 135% 0;
+    }
 }
 
 .categories {

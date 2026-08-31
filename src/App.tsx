@@ -201,65 +201,68 @@ function App() {
       />
       <ExperienceCard experiences={FAKE_EXPERIENCES} />
       <SkillBubbles skills={FAKE_SKILLS} />
-      <div className="projectsWrapper" ref={wrapperRef}>
-        {showArrows && (
-          <button
-            type="button"
-            className="arrowButton arrowLeft"
-            onClick={showPreviousProjects}
-            aria-label="Show previous project"
+      <div className="projectsSectionWrapper">
+        <h2 className="projectsHeading">Projects</h2>
+        <div className="projectsWrapper" ref={wrapperRef}>
+          {showArrows && (
+            <button
+              type="button"
+              className="arrowButton arrowLeft"
+              onClick={showPreviousProjects}
+              aria-label="Show previous project"
+            >
+              ‹
+            </button>
+          )}
+          <div
+            className="projectsSection"
+            style={{ maxWidth: getSlotWidthPx(wrapperWidth) * numVisible }}
           >
-            ‹
-          </button>
-        )}
-        <div
-          className="projectsSection"
-          style={{ maxWidth: getSlotWidthPx(wrapperWidth) * numVisible }}
-        >
-          <div className="projectsViewport" ref={viewportRef}>
-            {transitionSlots ? (
-              <div
-                className="projectsTrack"
-                style={{
-                  transform: `translateX(${shiftPx}px)`,
-                  transition: shiftAnimated ? `transform ${SLIDE_DURATION_MS}ms ease` : 'none',
-                }}
-              >
-                {transitionSlots.map((project, i) => (
-                  <div
-                    className="projectSlot"
-                    style={{ flexBasis: `${100 / numVisible}%` }}
-                    key={`${project.name}-${shiftDirection}-${i}`}
-                  >
-                    <ProjectCard {...project} />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="projectsTrack">
-                {visibleProjects.map((project) => (
-                  <div
-                    className="projectSlot"
-                    style={{ flexBasis: `${100 / numVisible}%` }}
-                    key={project.name}
-                  >
-                    <ProjectCard {...project} />
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className="projectsViewport" ref={viewportRef}>
+              {transitionSlots ? (
+                <div
+                  className="projectsTrack"
+                  style={{
+                    transform: `translateX(${shiftPx}px)`,
+                    transition: shiftAnimated ? `transform ${SLIDE_DURATION_MS}ms ease` : 'none',
+                  }}
+                >
+                  {transitionSlots.map((project, i) => (
+                    <div
+                      className="projectSlot"
+                      style={{ flexBasis: `${100 / numVisible}%` }}
+                      key={`${project.name}-${shiftDirection}-${i}`}
+                    >
+                      <ProjectCard {...project} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="projectsTrack">
+                  {visibleProjects.map((project) => (
+                    <div
+                      className="projectSlot"
+                      style={{ flexBasis: `${100 / numVisible}%` }}
+                      key={project.name}
+                    >
+                      <ProjectCard {...project} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
+          {showArrows && (
+            <button
+              type="button"
+              className="arrowButton arrowRight"
+              onClick={showNextProjects}
+              aria-label="Show next project"
+            >
+              ›
+            </button>
+          )}
         </div>
-        {showArrows && (
-          <button
-            type="button"
-            className="arrowButton arrowRight"
-            onClick={showNextProjects}
-            aria-label="Show next project"
-          >
-            ›
-          </button>
-        )}
       </div>
       <OceanFloor />
     </div>
