@@ -1,0 +1,155 @@
+.wrapper {
+    /* Same em + clamp() scaling technique as experienceCard/titlecard: this
+       font-size is the single scale factor for every size below (heading
+       included, since it now lives outside the bordered box). */
+    font-size: clamp(4px, 1.3vw, 12px);
+
+    /* Narrow by default — only 2 of the 3 circles (16em each + 2em gap =
+       34em) fit per row at this width, so the third wraps below into the
+       triangle shape. Past 700px there's genuinely enough room for all
+       three side by side with breathing room, so the cap widens just
+       enough for that (16*3 + 2*2 = 52em) plus a little slack — not the
+       full viewport, just enough to space them out instead of a fixed
+       tiny gap. Pure em/vw scaling can't produce this kind of hard
+       "wraps here" edge on its own (both sides of the fit would scale
+       together and the ratio would never cross 1), hence the one
+       viewport-width breakpoint instead of a fluid clamp(). */
+    width: 35em;
+    max-width: 100%;
+    margin-top: 1.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    font-family: 'Quicksand', sans-serif;
+}
+
+@media (min-width: 700px) {
+    .wrapper {
+        width: 60em;
+    }
+}
+
+.heading {
+    margin: 0;
+    text-align: center;
+    color: #29bcbc;
+    border-bottom: 0.125em solid #29bcbc;
+    padding-bottom: 0.5em;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.75em;
+}
+
+.categories {
+    /* No media query — the wrap happens naturally from real estate. Wide
+       enough: all three fit in a row with a comfortable gap. Medium: only
+       two fit per line, so the third wraps below, centered (the "triangle"
+       shape). Narrow: down to one per line, fully stacked. */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2em;
+}
+
+.categoryGroup {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75em;
+}
+
+.categoryLabel {
+    margin: 0;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    opacity: 0.85;
+}
+
+.category {
+    /* Fixed width + aspect-ratio (rather than flex-grow) keeps this a true
+       circle regardless of how much content its neighbors hold. border-box
+       so the padding/border below don't inflate this past 16em — otherwise
+       three of these no longer fit inside .wrapper's 60em cap. */
+    box-sizing: border-box;
+    width: 16em;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5em;
+    text-align: center;
+    border: 0.125em solid var(--accent);
+    /* Solid backdrop (same navy as the rest of the site's cards) instead of
+       a faint tint over the page background — otherwise the circle itself
+       is hard to read against the page. */
+    background: #0e3050;
+}
+
+.bubbleRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+.bubble {
+    /* No circle/border/background here anymore — just the icon itself,
+       floating directly on the category circle's backdrop. */
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-size: 2.5em;
+    animation: bob var(--bob-duration, 3s) ease-in-out infinite;
+    animation-delay: var(--bob-delay, 0s);
+}
+
+/* Hovered skill stops bobbing and shows its name (see .tooltip) — easier to
+   read both the icon and its label when it's not drifting around. */
+.bubble:hover {
+    animation-play-state: paused;
+}
+
+/* Fallback initial (skills with no icon mapped) — sized down from the
+   2.5em icon size, since a bare letter that big reads oddly next to icons. */
+.bubble span:not(.tooltip) {
+    font-size: 0.5em;
+    font-weight: 600;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translate(-50%, -0.4em);
+    white-space: nowrap;
+    background: #0e3050;
+    border: 0.125em solid var(--accent);
+    border-radius: 0.5em;
+    padding: 0.2em 0.6em;
+    font-size: 0.4em;
+    font-weight: 600;
+    color: var(--accent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 1; /* sits above neighboring icons/tooltips */
+}
+
+.bubble:hover .tooltip {
+    opacity: 1;
+}
+
+@keyframes bob {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-0.35em);
+    }
+}

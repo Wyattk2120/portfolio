@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import TitleCard from './components/titlecard/titlecard';
 import ExperienceCard from './components/experienceCard/experienceCard';
+import SkillBubbles, { type Skill } from './components/skillBubbles/skillBubbles';
 import ProjectCard from './components/projectCard/projectCard';
 import OceanFloor from './components/oceanfloor/OceanFloor';
 import heroImg from './assets/hero.png';
@@ -40,6 +41,22 @@ const FAKE_EXPERIENCES = [
     endDate: { month: 5, year: 2021 },
     description: 'Held office hours and graded assignments for an intro CS course of ~150 students per semester.',
   },
+];
+
+// Text-only for now — swapping these for a real icon set (react-icons) is the planned next step.
+const FAKE_SKILLS: Skill[] = [
+  { name: 'React', category: 'frontend' },
+  { name: 'TypeScript', category: 'frontend' },
+  { name: 'CSS', category: 'frontend' },
+  { name: 'Vite', category: 'frontend' },
+  { name: 'Node.js', category: 'backend' },
+  { name: 'Express', category: 'backend' },
+  { name: 'PostgreSQL', category: 'backend' },
+  { name: 'REST APIs', category: 'backend' },
+  { name: 'Git', category: 'other' },
+  { name: 'Docker', category: 'other' },
+  { name: 'Figma', category: 'other' },
+  { name: 'AWS', category: 'other' },
 ];
 
 const FAKE_PROJECTS = [
@@ -183,6 +200,7 @@ function App() {
         credentials={FAKE_CREDENTIALS}
       />
       <ExperienceCard experiences={FAKE_EXPERIENCES} />
+      <SkillBubbles skills={FAKE_SKILLS} />
       <div className="projectsWrapper" ref={wrapperRef}>
         {showArrows && (
           <button

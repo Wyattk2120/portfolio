@@ -4,6 +4,7 @@
   flex-direction: column;
   justify-content: space-between; /* was: flex-end — first child now goes top, last stays bottom */
   align-items: center; /* centers children horizontally */
+  gap: clamp(2rem, 5vw, 5rem); /* guarantees breathing room between title/experience/projects even when content exceeds 100vh and space-between has nothing left to distribute */
 
 }
 
