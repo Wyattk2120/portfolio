@@ -1,16 +1,6 @@
-# Wyatt King — Portfolio
+# Wyatt King's Portfolio
 
-My personal portfolio site, built with React, TypeScript, and Vite. It's set underwater: a fully animated ocean scene (swaying seaweed, scattered rocks, drifting fish schools) sits behind the actual content — profile/bio, credentials, professional experience, tech stack, and projects.
-
-## Features
-
-- **Title card** — name, photo, bio, and credentials
-- **Professional experience** — job history with quantified achievements
-- **Tech stack** — skills grouped into Frontend/Backend/Other, each category its own circle of icons
-- **Projects** — a responsive card carousel (arrows appear only when there isn't room to show every project at once) with a "Code" button linking to each project's GitHub repo
-- **Ocean floor scene** — CSS-animated seaweed and rocks, scaled to the viewport
-- **Fish schools** — decorative clusters drifting in the empty margins on wide screens, hidden on narrow ones
-- Every section scales fluidly with `clamp()`-based `em` sizing rather than fixed breakpoints, so it holds up across phone-to-ultrawide screen widths
+My personal portfolio site, built with React, TypeScript, and Vite. It's set underwater: a fully animated ocean scene (swaying seaweed, scattered rocks, drifting fish schools) sits behind the actual content, including profile/bio, credentials, professional experience, tech stack, and projects.
 
 ## Tech stack
 
