@@ -6,58 +6,73 @@ import ProjectCard from './components/projectCard/projectCard';
 import OceanFloor from './components/oceanfloor/OceanFloor';
 import FishBackdrop from './components/fishSchool/FishBackdrop';
 import heroImg from './assets/hero.png';
+import profileImg from './assets/profile-image.jfif';
 import './App.css'
 
-const FAKE_CREDENTIALS = [
-  { title: 'B.S. Computer Science', issuer: 'State University', achieved: '2021' },
-  { title: 'AWS Certified Developer', issuer: 'Amazon Web Services', achieved: '2022' },
-  { title: 'Full-Stack Web Development', issuer: 'Coding Bootcamp', achieved: '2023' },
+const CREDENTIALS = [
+  { title: 'A.S., Computer Science', issuer: 'Catawba Valley Community College', achieved: '2023' },
+  { title: 'B.S., Software Engineering', issuer: 'University of North Carolina Wilmington', achieved: 'Expected Dec 2026' },
 ];
 
-const FAKE_EXPERIENCES = [
+const EXPERIENCES = [
   {
-    company: 'Startup Studio',
-    position: 'Full-Stack Developer',
-    startDate: { month: 9, year: 2023 },
-    description: 'Currently building internal tools and shipping features across the stack for a small product team.',
+    company: '45Drives',
+    position: 'Solutions Specialist Intern',
+    startDate: { month: 5, year: 2026 },
+    endDate: { month: 8, year: 2026 },
+    description: 'Worked directly with customers to troubleshoot, configure, and maintain high-performance Linux-based storage servers, resolving 90+ support tickets spanning both software and hardware issues.',
+    achievements: [
+      'Configured and troubleshot Samba, NFS, and iSCSI file-sharing services, including connectivity, permissions, and mounting issues',
+      'Diagnosed hardware failures across motherboards, RAM, power supplies, cooling fans, HDDs, SSDs, and NVMe drives',
+      'Configured and maintained mdadm software RAID arrays to resolve storage issues',
+      'Built and configured servers from scratch — OS install, drive mapping, storage configuration, and network file-share deployment',
+      'Provided remote technical support, diagnosing root causes and guiding customers through solutions',
+    ],
+    closing: 'This role gave me hands-on experience administering Linux servers and enterprise storage systems while strengthening my troubleshooting, communication, and customer-service skills.',
   },
   {
-    company: 'Acme Corp',
-    position: 'Frontend Engineer',
-    startDate: { month: 6, year: 2022 },
-    endDate: { month: 8, year: 2023 },
-    description: "Built and maintained the company's customer-facing dashboard, focusing on performance and accessibility.",
-  },
-  {
-    company: 'Web Dev Agency',
-    position: 'Junior Developer',
-    startDate: { month: 1, year: 2021 },
-    endDate: { month: 5, year: 2022 },
-    description: 'Shipped marketing sites and small e-commerce storefronts for a variety of clients.',
-  },
-  {
-    company: 'State University',
-    position: 'Teaching Assistant, Intro to Programming',
-    startDate: { month: 8, year: 2019 },
-    endDate: { month: 5, year: 2021 },
-    description: 'Held office hours and graded assignments for an intro CS course of ~150 students per semester.',
+    company: 'Campbell Oil Company',
+    position: 'Business Data Support Intern',
+    startDate: { month: 6, year: 2025 },
+    endDate: { month: 11, year: 2025 },
+    description: "Validated customer data using complex logic sets in the company's internal systems, identifying discrepancies and working with executive leadership to resolve issues affecting financial accuracy and customer experience.",
+    achievements: [
+      'Audited 1,400+ customer accounts, improving pricing and financial accuracy',
+      'Found that 40% of accounts needed pricing adjustments, directly improving revenue accuracy',
+      'Contacted 1,800+ customers to verify and update account information',
+      'Presented findings and process improvements to executive leadership',
+      'Partnered with cross-functional teams to troubleshoot and resolve issues',
+    ],
+    closing: 'This role sharpened my data analysis, communication, and problem-solving skills while delivering measurable value to the organization.',
   },
 ];
 
-// Text-only for now — swapping these for a real icon set (react-icons) is the planned next step.
-const FAKE_SKILLS: Skill[] = [
+const SKILLS: Skill[] = [
   { name: 'React', category: 'frontend' },
-  { name: 'TypeScript', category: 'frontend' },
-  { name: 'CSS', category: 'frontend' },
   { name: 'Vite', category: 'frontend' },
+  { name: 'TypeScript', category: 'frontend' },
+  { name: 'JavaScript', category: 'frontend' },
+  { name: 'HTML', category: 'frontend' },
+  { name: 'CSS', category: 'frontend' },
+  { name: 'Tailwind CSS', category: 'frontend' },
+  { name: 'AWS Amplify', category: 'frontend' },
+  { name: 'Axios', category: 'frontend' },
+  { name: 'Vitest', category: 'frontend' },
+  { name: 'FontAwesome', category: 'frontend' },
   { name: 'Node.js', category: 'backend' },
-  { name: 'Express', category: 'backend' },
-  { name: 'PostgreSQL', category: 'backend' },
-  { name: 'REST APIs', category: 'backend' },
-  { name: 'Git', category: 'other' },
-  { name: 'Docker', category: 'other' },
-  { name: 'Figma', category: 'other' },
+  { name: 'NestJS', category: 'backend' },
+  { name: 'Prisma', category: 'backend' },
+  { name: 'Zod', category: 'backend' },
+  { name: 'JWT Verification', category: 'backend' },
+  { name: 'Jest', category: 'backend' },
+  { name: 'Python', category: 'backend' },
   { name: 'AWS', category: 'other' },
+  { name: 'Docker', category: 'other' },
+  { name: 'Git', category: 'other' },
+  { name: 'GitHub', category: 'other' },
+  { name: 'Scrum', category: 'other' },
+  { name: 'Agile', category: 'other' },
+  { name: 'CLI', category: 'other' },
 ];
 
 const FAKE_PROJECTS = [
@@ -196,13 +211,13 @@ function App() {
     <div className="page">
       <FishBackdrop />
       <TitleCard
-        name="Jamie Rivera"
-        image={heroImg}
-        bio="Web developer who loves building playful, interactive interfaces — currently obsessed with animating an entire ocean floor in CSS. I got my start tinkering with small personal projects and slowly fell in love with the process of turning a blank page into something that moves, responds, and feels alive. Since then I've worked across the stack, from wiring up backend APIs to obsessing over the exact easing curve of a hover animation. When I'm not writing code I'm usually reading about design systems, poking at some new CSS feature that just shipped, or rebuilding something I made years ago now that I know better. I care a lot about the small details — the kind most people never consciously notice, but definitely feel when they're missing."
-        credentials={FAKE_CREDENTIALS}
+        name="Wyatt King"
+        image={profileImg}
+        bio="I'm an aspiring software developer with a passion for problem-solving, continuous learning, and building things that make a real impact. My current goal is to land a software development role where I can grow technically, contribute meaningfully to a team, and keep pushing myself to learn new tools, technologies, and ways of thinking. Long term, I’m working toward building a career that not only supports me and my family, but also gives me the freedom to explore my hobbies, support the people around me, and possibly one day start something of my own. I believe in using tech to solve real problems, and I’m motivated by the idea of creating systems, products, or tools that help people work smarter or live better. Whether it’s through writing clean code, collaborating with others, or just staying curious, I’m excited to keep learning and growing and to build a career I can be proud of."
+        credentials={CREDENTIALS}
       />
-      <ExperienceCard experiences={FAKE_EXPERIENCES} />
-      <SkillBubbles skills={FAKE_SKILLS} />
+      <ExperienceCard experiences={EXPERIENCES} />
+      <SkillBubbles skills={SKILLS} />
       <div className="projectsSectionWrapper">
         <h2 className="projectsHeading">Projects</h2>
         <div className="projectsWrapper" ref={wrapperRef}>

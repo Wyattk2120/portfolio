@@ -1,9 +1,24 @@
 import type { CSSProperties } from 'react';
 import type { IconType } from 'react-icons';
-import { DiReact, DiCss3Full, DiNodejs, DiPostgresql, DiGit, DiDocker } from 'react-icons/di';
-import { SiTypescript, SiVite, SiExpress, SiFigma } from 'react-icons/si';
-import { FaAws } from 'react-icons/fa';
-import { TbApi } from 'react-icons/tb';
+import { DiReact, DiCss3Full, DiNodejs, DiPostgresql, DiGit, DiDocker, DiHtml5, DiJavascript } from 'react-icons/di';
+import {
+    SiTypescript,
+    SiVite,
+    SiExpress,
+    SiFigma,
+    SiTailwindcss,
+    SiAxios,
+    SiVitest,
+    SiNestjs,
+    SiPrisma,
+    SiZod,
+    SiJsonwebtokens,
+    SiJest,
+    SiPython,
+    SiScrumalliance,
+} from 'react-icons/si';
+import { FaAws, FaFontAwesome, FaGithub } from 'react-icons/fa';
+import { TbApi, TbTerminal } from 'react-icons/tb';
 import styles from './skillBubbles.module.css';
 
 export type SkillCategory = 'frontend' | 'backend' | 'other';
@@ -35,6 +50,8 @@ const CATEGORY_META: Record<SkillCategory, { label: string; accent: string }> = 
 const SKILL_ICONS: Record<string, IconType> = {
     React: DiReact,
     CSS: DiCss3Full,
+    HTML: DiHtml5,
+    JavaScript: DiJavascript,
     'Node.js': DiNodejs,
     PostgreSQL: DiPostgresql,
     Git: DiGit,
@@ -44,7 +61,21 @@ const SKILL_ICONS: Record<string, IconType> = {
     Express: SiExpress,
     Figma: SiFigma,
     AWS: FaAws,
+    'AWS Amplify': FaAws,
     'REST APIs': TbApi,
+    'Tailwind CSS': SiTailwindcss,
+    Axios: SiAxios,
+    Vitest: SiVitest,
+    FontAwesome: FaFontAwesome,
+    NestJS: SiNestjs,
+    Prisma: SiPrisma,
+    Zod: SiZod,
+    'JWT Verification': SiJsonwebtokens,
+    Jest: SiJest,
+    Python: SiPython,
+    Scrum: SiScrumalliance,
+    CLI: TbTerminal,
+    GitHub: FaGithub,
 };
 
 /** Cycled by a running index (across all categories) so neighboring bubbles don't bob in sync. */

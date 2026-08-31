@@ -11,6 +11,10 @@ type Experience = {
     startDate: MonthYear;
     endDate?: MonthYear; //omitted = still current ("Present")
     description: string;
+    /** Bullet points rendered between description and closing, e.g. quantified achievements. */
+    achievements?: string[];
+    /** Optional closing paragraph, rendered after achievements. */
+    closing?: string;
 }
 
 type ExperienceCardProps = {
@@ -31,7 +35,7 @@ const ExperienceCard = ({ experiences }: ExperienceCardProps) => {
             <h2 className={styles.heading}>Professional Experience</h2>
             <div className={styles.experienceCard}>
                 <ul className={styles.list}>
-                    {experiences.map(({ company, position, startDate, endDate, description }, i) => {
+                    {experiences.map(({ company, position, startDate, endDate, description, achievements, closing }, i) => {
                         const dateRange = `${formatMonthYear(startDate)} - ${endDate ? formatMonthYear(endDate) : "Present"}`;
 
                         return (
@@ -42,6 +46,14 @@ const ExperienceCard = ({ experiences }: ExperienceCardProps) => {
                                 </div>
                                 <h4 className={styles.company}>{company}</h4>
                                 <p className={styles.description}>{description}</p>
+                                {achievements && achievements.length > 0 && (
+                                    <ul className={styles.achievements}>
+                                        {achievements.map((achievement, j) => (
+                                            <li key={j}>{achievement}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                                {closing && <p className={styles.description}>{closing}</p>}
                             </li>
                         );
                     })}

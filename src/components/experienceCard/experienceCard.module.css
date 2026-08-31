@@ -139,6 +139,25 @@
     line-height: 1.5;
 }
 
+.description + .achievements {
+    margin-top: 0.75em;
+}
+
+.achievements {
+    margin: 0;
+    padding-left: 1.5em;
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+.achievements li:not(:last-child) {
+    margin-bottom: 0.4em;
+}
+
+.achievements + .description {
+    margin-top: 0.75em;
+}
+
 /* Scrollbar treatment matches .bio in titlecard.module.css, so the two
    scrollable cards read as the same design system. */
 .experienceCard::-webkit-scrollbar {
