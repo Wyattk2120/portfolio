@@ -1,78 +1,39 @@
+# Wyatt King — Portfolio
 
-# React + TypeScript + Vite
+My personal portfolio site, built with React, TypeScript, and Vite. It's set underwater: a fully animated ocean scene (swaying seaweed, scattered rocks, drifting fish schools) sits behind the actual content — profile/bio, credentials, professional experience, tech stack, and projects.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Features
 
-Currently, two official plugins are available:
+- **Title card** — name, photo, bio, and credentials
+- **Professional experience** — job history with quantified achievements
+- **Tech stack** — skills grouped into Frontend/Backend/Other, each category its own circle of icons
+- **Projects** — a responsive card carousel (arrows appear only when there isn't room to show every project at once) with a "Code" button linking to each project's GitHub repo
+- **Ocean floor scene** — CSS-animated seaweed and rocks, scaled to the viewport
+- **Fish schools** — decorative clusters drifting in the empty margins on wide screens, hidden on narrow ones
+- Every section scales fluidly with `clamp()`-based `em` sizing rather than fixed breakpoints, so it holds up across phone-to-ultrawide screen widths
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech stack
 
-## React Compiler
+- React 19 + TypeScript
+- Vite
+- CSS Modules
+- [react-icons](https://react-icons.github.io/react-icons/) for tech-stack/skill icons
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting started
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Other scripts:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run build    # type-check and build for production
+npm run preview  # preview the production build locally
+npm run lint     # run ESLint
 ```
 
+## Project structure
 
+Personal content (name, bio, credentials, experience, skills, projects) lives in `src/App.tsx`. Each visual section is its own component under `src/components/`, each with a co-located CSS Module.

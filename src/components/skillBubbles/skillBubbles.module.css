@@ -4,18 +4,18 @@
        included, since it now lives outside the bordered box). */
     font-size: clamp(4px, 1.3vw, 12px);
 
-    /* Narrow by default — only 2 of the 3 circles (26em each + 2em gap =
-       54em) fit per row at this width, so the third wraps below into the
+    /* Narrow by default — only 2 of the 3 circles (22em each + 2em gap =
+       46em) fit per row at this width, so the third wraps below into the
        triangle shape. Past 700px there's genuinely enough room for all
        three side by side with breathing room, so the cap widens just
-       enough for that (26*3 + 2*2 = 82em) plus a little slack — not the
+       enough for that (22*3 + 2*2 = 70em) plus a little slack — not the
        full viewport, just enough to space them out instead of a fixed
        tiny gap. Pure em/vw scaling can't produce this kind of hard
        "wraps here" edge on its own (both sides of the fit would scale
        together and the ratio would never cross 1), hence the one
        viewport-width breakpoint instead of a fluid clamp(). These numbers
-       are tied to .category's fixed 26em width — retune both together. */
-    width: 55em;
+       are tied to .category's fixed 22em width — retune both together. */
+    width: 47em;
     max-width: 100%;
     margin-top: 1.5em;
     display: flex;
@@ -26,7 +26,7 @@
 
 @media (min-width: 700px) {
     .wrapper {
-        width: 88em;
+        width: 74em;
     }
 }
 
@@ -106,7 +106,7 @@
        regardless of how much content its neighbors hold. border-box so the
        padding/border below don't inflate this past that fixed width. */
     box-sizing: border-box;
-    width: 26em;
+    width: 22em;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     overflow: hidden; /* safety net: clips to the circle instead of spilling past it if a category ever gets more crowded than --circle-size accounts for */
