@@ -10,5 +10,12 @@ html{
     #184866 100%
   );
   min-height: 100vh;
+  /* Reserves the vertical scrollbar's space from the very first paint,
+     instead of only once the page grows tall enough to actually need it
+     (e.g. after images finish loading). Without this, that one-time
+     appearance shifts the page's available width, and FishSchool.tsx's
+     positioning — which mixes `%` (shrinks when the scrollbar appears)
+     with `vw` (may not) — can snap to a new value right as it happens. */
+  scrollbar-gutter: stable;
 }
 
