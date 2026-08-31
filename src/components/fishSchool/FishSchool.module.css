@@ -43,7 +43,14 @@
 
 .drifter {
     position: absolute;
-    animation: fishDrift var(--drift-duration, 6s) ease-in-out infinite alternate;
+    /* backwards is what actually fixes the reload lurch: fishDrift's "from"
+       keyframe is translateX(-drift-range), not 0 — without backwards, the
+       browser renders the element at its plain untransformed position for
+       the whole animation-delay, then snaps to that "from" offset the
+       instant the delay elapses. Since every fish has its own staggered
+       delay, each one used to snap at a different moment right after load.
+       Same fix OceanFloor's .seaweed already uses for the same reason. */
+    animation: fishDrift var(--drift-duration, 6s) ease-in-out infinite alternate backwards;
     animation-delay: var(--drift-delay, 0s);
 }
 
@@ -51,7 +58,11 @@
     display: block;
     fill: #0e3050; /* same navy as the card backgrounds — reads as a dim shape glimpsed in the water rather than a foreground element */
     opacity: 0.45;
-    animation: fishBob var(--bob-duration, 3.5s) ease-in-out infinite;
+    /* fishBob's 0% keyframe already matches the untransformed default
+       (translateY(0)), so this one was never actually snapping — added
+       for consistency with .drifter and as a safeguard if that keyframe
+       ever changes. */
+    animation: fishBob var(--bob-duration, 3.5s) ease-in-out infinite backwards;
     animation-delay: var(--bob-delay, 0s);
 }
 
