@@ -5,8 +5,10 @@ import SkillBubbles, { type Skill } from './components/skillBubbles/skillBubbles
 import ProjectCard from './components/projectCard/projectCard';
 import OceanFloor from './components/oceanfloor/OceanFloor';
 import FishBackdrop from './components/fishSchool/FishBackdrop';
-import heroImg from './assets/hero.png';
 import profileImg from './assets/profile-image.jfif';
+import heatmapImg from './assets/HeatmapActive.png';
+import shapeUpImg from './assets/Shape Up.png';
+import portfolioImg from './assets/portfolio.png';
 import './App.css'
 
 const CREDENTIALS = [
@@ -75,40 +77,43 @@ const SKILLS: Skill[] = [
   { name: 'CLI', category: 'other' },
 ];
 
-const FAKE_PROJECTS = [
+const PROJECTS = [
   {
-    name: 'Ocean Floor Scene',
-    image: heroImg,
-    description: 'A fully animated CSS ocean floor scene with swaying seaweed and scattered rocks, all scaled proportionally to the viewport.',
-    techStack: ['React', 'TypeScript', 'CSS'],
+    name: 'Heatmap',
+    image: heatmapImg,
+    description: 'A web application that visualizes real-time room occupancy by scanning WiFi signals via Raspberry Pis and displays the data as a dynamic heatmap.',
+    techStack: ['Python', 'JavaScript', 'Vue.js', 'HTML', 'CSS', 'Node.js', 'Raspberry Pi', 'PostgreSQL', 'Fly.io', 'Playwright'],
+    repoUrl: 'https://github.com/Wyattk2120/seng401-project-mawc',
   },
   {
-    name: 'Task Tracker',
-    image: heroImg,
-    description: 'A small Kanban-style app for tracking personal tasks, with drag-and-drop columns and local persistence.',
-    techStack: ['React', 'Vite', 'Zustand'],
+    name: 'Shape Up',
+    image: shapeUpImg,
+    description: 'A health-based website UI design used to practice utilizing CSS, HTML, and JavaScript.',
+    techStack: ['HTML', 'CSS', 'JavaScript'],
+    repoUrl: 'https://github.com/Wyattk2120/SENG-365-Shape-Up-',
   },
   {
-    name: 'Recipe Finder',
-    image: heroImg,
-    description: 'Searches a public recipe API and lets users save favorites, with a responsive card grid layout.',
-    techStack: ['React', 'REST API', 'CSS Grid'],
+    name: 'Portfolio',
+    image: portfolioImg,
+    description: 'This site — a personal portfolio with a fully animated ocean scene (swaying seaweed, drifting fish schools, glowing section headers) built on a fluid, clamp()-based scaling system so every card and icon grows proportionally across screen sizes.',
+    techStack: ['React', 'TypeScript', 'Vite', 'CSS', 'react-icons'],
+    repoUrl: 'https://github.com/Wyattk2120/portfolio',
   },
 ];
 
-type Project = (typeof FAKE_PROJECTS)[number];
+type Project = (typeof PROJECTS)[number];
 type SlideDirection = 'next' | 'prev';
 
 const SLIDE_DURATION_MS = 400;
 
-// Mirrors the CSS: --card-font-scale: clamp(4px, 1vw, 9.5px) and the
-// card's own `max-width: 30em`, plus .projectSlot's `padding-inline: 1.5vw`
+// Mirrors the CSS: --card-font-scale: clamp(6px, 1.55vw, 15px) and the
+// card's own `max-width: 32em`, plus .projectSlot's `padding-inline: 1.5vw`
 // on both sides of every slot. Kept in one place so "how many cards fit"
 // stays in sync with how big the cards actually render.
-const CARD_MAX_EM = 30;
-const FONT_SCALE_MIN_PX = 4;
-const FONT_SCALE_MAX_PX = 9.5;
-const FONT_SCALE_VW = 0.01; // 1vw
+const CARD_MAX_EM = 32;
+const FONT_SCALE_MIN_PX = 6;
+const FONT_SCALE_MAX_PX = 15;
+const FONT_SCALE_VW = 0.0155; // 1.55vw
 const SLOT_PADDING_VW = 0.03; // 1.5vw × 2 sides
 const ARROW_RESERVED_PX = 160; // rough space for both arrow buttons + their insets
 
@@ -141,14 +146,14 @@ function App() {
   // wide screen, 1 on a narrow one — capped at the total project count so
   // we never try to show more cards than exist.
   const numVisible = Math.min(
-    FAKE_PROJECTS.length,
+    PROJECTS.length,
     Math.max(1, Math.floor((wrapperWidth - ARROW_RESERVED_PX) / getSlotWidthPx(wrapperWidth)))
   );
-  const showArrows = numVisible < FAKE_PROJECTS.length;
+  const showArrows = numVisible < PROJECTS.length;
 
   const visibleProjects = Array.from(
     { length: numVisible },
-    (_, offset) => FAKE_PROJECTS[(projectIndex + offset) % FAKE_PROJECTS.length]
+    (_, offset) => PROJECTS[(projectIndex + offset) % PROJECTS.length]
   );
 
   useEffect(() => {
@@ -170,7 +175,7 @@ function App() {
     if (transitionSlots || !showArrows) return; // ignore clicks until the current shift settles, or if everything already fits
 
     const at = (offset: number) =>
-      FAKE_PROJECTS[(projectIndex + offset + FAKE_PROJECTS.length) % FAKE_PROJECTS.length];
+      PROJECTS[(projectIndex + offset + PROJECTS.length) % PROJECTS.length];
     const slots = Array.from({ length: numVisible + 1 }, (_, i) =>
       direction === 'next' ? at(i) : at(i - 1)
     );
@@ -195,8 +200,8 @@ function App() {
     commitTimeoutRef.current = setTimeout(() => {
       setProjectIndex((i) =>
         direction === 'next'
-          ? (i + 1) % FAKE_PROJECTS.length
-          : (i - 1 + FAKE_PROJECTS.length) % FAKE_PROJECTS.length
+          ? (i + 1) % PROJECTS.length
+          : (i - 1 + PROJECTS.length) % PROJECTS.length
       );
       setTransitionSlots(null);
       setShiftAnimated(false);

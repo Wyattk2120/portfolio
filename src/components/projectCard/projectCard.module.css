@@ -6,10 +6,10 @@
        .projectSlot's width — scale in lockstep at every viewport width;
        the clamp() here is only a fallback for if this ever renders outside
        that ancestor. */
-    font-size: var(--card-font-scale, clamp(5px, 1.15vw, 11px));
+    font-size: var(--card-font-scale, clamp(6px, 1.55vw, 15px));
 
     flex: 1 1 0; /* fills its .projectSlot (50% of the viewport), capped by max-width below */
-    max-width: 30em; /* caps the card's actual size — .projectSlot is 50% of the full viewport, way bigger than this on most screens */
+    max-width: 32em; /* caps the card's actual size — .projectSlot is 50% of the full viewport, way bigger than this on most screens */
     min-width: 0; /* lets it shrink below its content's size instead of overflowing the row */
     aspect-ratio: 2 / 3; /* rectangular, taller than it is wide */
     display: flex;
@@ -17,17 +17,24 @@
     background: #0e3050;
     border: 0.125em solid #29bcbc;
     border-radius: 1.5em;
-    overflow: hidden; /* clips the image's top corners to the card's radius */
+    overflow: hidden; /* clips anything (still relevant beyond just the image) to the card's rounded corners */
     margin-top: 1.5em;
     color: #29bcbc;
     font-family: 'Quicksand', sans-serif;
 }
 
+.imageWrapper {
+    flex: 0 0 45%; /* top portion of the card's height; details take the rest */
+    min-height: 0; /* same min-width:auto gotcha as before, mirrored on the main axis */
+    box-sizing: border-box;
+    padding: 1em; /* breathing room between the image and the card's edge — the image no longer runs flush to the border */
+}
+
 .image {
     display: block;
     width: 100%;
-    flex: 0 0 45%; /* top portion of the card's height; details take the rest */
-    min-height: 0; /* same min-width:auto gotcha as before, mirrored on the main axis */
+    height: 100%;
+    border-radius: 0.75em; /* rounds its own corners now that it's inset, instead of relying on .projectCard's overflow:hidden clip */
     object-fit: cover;
 }
 
@@ -69,4 +76,28 @@
     font-size: 0.8em;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+}
+
+.codeButton {
+    /* Pushes to the bottom of .details' remaining space (it's a flex
+       column) and centers horizontally, regardless of how much room the
+       description/tags above it take up. */
+    margin-top: auto;
+    align-self: center;
+    display: inline-block;
+    border: 0.125em solid #29bcbc;
+    border-radius: 999em;
+    padding: 0.5em 1.5em;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #29bcbc;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.codeButton:hover {
+    background: #29bcbc;
+    color: #0e3050;
 }

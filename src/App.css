@@ -89,7 +89,7 @@
      matches what App.tsx assumed when it computed how many cards fit and
      set this element's max-width inline (getSlotWidthPx mirrors this same
      clamp() in JS). */
-  --card-font-scale: clamp(4px, 1vw, 9.5px);
+  --card-font-scale: clamp(6px, 1.55vw, 15px);
 }
 
 .projectsViewport {
